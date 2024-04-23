@@ -1,0 +1,71 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Getting Started: Serving Web Content</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    
+
+
+
+    <nav class="navbar navbar-expand-md bg-info navbar-info">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">Artista Management System</a>
+      
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/artistas}">Artista Management</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <br>
+      <br>
+          <div class = "container">
+              <div class = "row">
+                  <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+                      <h1 class = "text-center"> Create New Artista </h1>
+                      <div class = "card-body">
+                          <!-- Formulario para añadir los datos del artista -->
+                          <form th:action="@{/artista}" th:object = "${artista}" method="POST">
+                              <div class ="form-group">
+                                  <label> Artista Nombre del Artista </label>
+                                  <input
+                                  type = "text"
+                                  name = "nombre_artista"
+                                  th:field = "*{nombre_artista}"
+                                  class = "form-control"
+                                  placeholder="Introduzca su nombre" 
+                                  />
+                              </div>
+                              
+                              <div class = "box-footer">
+                                  <button type="submit" class = "btn btn-primary">
+                                      Enviar
+                                  </button>
+                              </div>
+                          </form>
+                      
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+
+
+
+
+
+</body>
+</html>

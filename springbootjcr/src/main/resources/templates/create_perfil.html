@@ -1,0 +1,170 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Getting Started: Serving Web Content</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    
+
+
+
+    <nav class="navbar navbar-expand-md bg-info navbar-info">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">Student Management System</a>
+      
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/perfiles}">Student Management</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <br>
+      <br>
+          <div class = "container">
+              <div class = "row">
+                  <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+                      <h1 class = "text-center"> Create New Perfil </h1>
+                      <div class = "card-body">
+                          <!-- Formulario para añadir los datos del perfil, debe ser válido -->
+                          <form th:action="@{/perfil}" th:object = "${perfil}" method="POST" onsubmit="return validarFormulario()">
+                              <div class ="form-group">
+                                  <label> Perfil Login </label>
+                                  <input
+                                  type = "text"
+                                  id="login"
+                                  name = "login"
+                                  th:field = "*{login}"
+                                  class = "form-control"
+                                  placeholder="Introduzca su login" 
+                                  required/>
+                              </div>
+                              
+                              <div class ="form-group">
+                                  <label> Perfil Contraseña </label>
+                                  <input
+                                  type = "password"
+                                  name = "contrasenia"
+                                  th:field = "*{contrasenia}"
+                                  class = "form-control"
+                                  placeholder="Introduzca la contraseña" 
+                                  required/>
+                              </div>
+                              
+                              <div class ="form-group">
+                                  <label> Perfil Email </label>
+                                  <input
+                                  type = "email"
+                                  id ="email"
+                                  name = "email"
+                                  th:field = "*{email}"
+                                  class = "form-control"
+                                  placeholder="Introduzca su email" 
+                                  required/>
+                              </div>
+                              
+                              <div class ="form-group">
+                                  <label> Perfil Nombre de Usuario </label>
+                                  <input
+                                  type = "text"
+                                  id="username"
+                                  name = "nombre_usuario"
+                                  th:field = "*{nombre_usuario}"
+                                  class = "form-control"
+                                  placeholder="Introduzca su nombre de usuario" 
+                                  required/>
+                              </div>
+                              
+                              <div class = "box-footer">
+                                  <button type="submit" class = "btn btn-primary">
+                                      Enviar
+                                  </button>
+                              </div>
+                          </form>
+                      
+                          <!-- Script para comprobar que el login, username y email no se repiten ES JAVASCRIPT -->
+                          <script>
+                            function validarFormulario() {
+                                var login = document.getElementById("login").value;
+                                var username = document.getElementById("username").value;
+                                var email = document.getElementById("email").value;
+                                
+                                // Configuración de la petición
+                                var xhrLogin = new XMLHttpRequest();
+                                xhrLogin.open("POST", "/verificarLogin", false);
+                                xhrLogin.setRequestHeader("Content-Type", "application/json");
+                                xhrLogin.send(JSON.stringify(login));
+
+                                if (xhrLogin.status == 200) {
+                                    var respuestaLogin = JSON.parse(xhrLogin.responseText);
+                                    if (!respuestaLogin) {
+                                        alert("Mensaje de alerta: ¡El login ya existe en el sistema, escoja otro!");
+                                        return false;
+                                    }
+                                } else {
+                                    alert("Error: No se pudo realizar la verificación del login.");
+                                    return false;
+                                }
+                                
+                                // Configuración de la petición
+                                var xhrUsername = new XMLHttpRequest();
+                                xhrUsername.open("POST", "/verificarUsername", false);
+                                xhrUsername.setRequestHeader("Content-Type", "application/json");
+                                xhrUsername.send(JSON.stringify(username));
+
+                                if (xhrUsername.status == 200) {
+                                    var respuestaUsername = JSON.parse(xhrUsername.responseText);
+                                    if (!respuestaUsername) {
+                                        alert("Mensaje de alerta: ¡El nombre de usuario ya existe en el sistema, escoja otro!");
+                                        return false;
+                                    }
+                                } else {
+                                    alert("Error: No se pudo realizar la verificación del username.");
+                                    return false;
+                                }
+                                
+                                // Configuración de la petición
+                                var xhrEmail = new XMLHttpRequest();
+                                xhrEmail.open("POST", "/verificarEmail", false);
+                                xhrEmail.setRequestHeader("Content-Type", "application/json");
+                                xhrEmail.send(JSON.stringify(email));
+
+                                if (xhrEmail.status == 200) {
+                                    var respuestaEmail = JSON.parse(xhrEmail.responseText);
+                                    if (!respuestaEmail) {
+                                        alert("Mensaje de alerta: ¡El email ya existe en el sistema, escoja otro!");
+                                        return false;
+                                    }
+                                } else {
+                                    alert("Error: No se pudo realizar la verificación del email.");
+                                    return false;
+                                }
+
+                                // Si todo está bien, permitir el envío del formulario
+                                return true;
+                            }
+                        </script>
+                          
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Playlists</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-md bg-info navbar-info">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">Playlist Management System</a>
+    
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/perfil">Perfil Management</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/playlist">Playlist Management</a>
+            </li>
+             <li class="nav-item">
+            <a class="nav-link" href="/cancion">Canción Management</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/artista">Artista Management</a>
+            </li>
+        </ul>
+        </div>
+    </nav>
+    
+        <div class ="container">
+            <div class = "row">
+                <h1> Playlists </h1>
+            </div>
+            
+            <div class = "row">
+                <div class = "col-lg-3">
+                    <a th:href = "@{/playlist/new}" class = "btn btn-primary btn-sm mb-3"> Añadir Playlist</a>
+                </div>
+            </div>
+            <table class = "table table-striped table-bordered">
+                <thead class = "table-info">
+                    <tr>
+                        <th> Playlist ID </th>
+                        <th> Playlist Nombre </th>
+                        <th> Playlist Numero de canciones </th>
+                        <th> Playlist Creador </th>
+                        <th> Actions </th>
+                    </tr>
+                </thead>
+                <!-- Implementación de los atributos de las playlists -->
+                
+                <tbody>
+                     <tr th:each = "playlist: ${playlists}">
+                        <td th:text = "${playlist.id_playlist}"></td>
+                        <td th:text = "${playlist.nombre_playlist}"></td>
+                        <td th:text = "${playlist.num_canciones}"></td>
+                        <td th:if="${playlist.id_creador != null}" th:text="${playlist.id_creador.id_perfil + ' - ' + playlist.id_creador.nombre_usuario}"></td>
+                        <td th:if="${playlist.id_creador == null}">NULL</td>
+
+                        <td>
+                            <a th:href = "@{/playlist/edit/{id}(id=${playlist.id_playlist})}" 
+                                class = "btn btn-primary">Update</a>
+                            
+                            <a th:href = "@{/playlist/{id}(id=${playlist.id_playlist})}" 
+                                class = "btn btn-danger">Delete</a>
+                                
+                            <a th:href = "@{/playlist/{id}/details (id=${playlist.id_playlist})}" 
+                                class = "btn btn-success">Details</a>        
+                        </td>
+                    </tr>
+                </tbody>
+                
+            
+            </table>
+            
+        </div>
+
+
+
+
+</body>
+</html>

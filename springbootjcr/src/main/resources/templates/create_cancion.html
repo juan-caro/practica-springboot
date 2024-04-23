@@ -1,0 +1,108 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+<head> 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <title>Getting Started: Serving Web Content</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    
+
+
+
+    <nav class="navbar navbar-expand-md bg-info navbar-info">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">Cancion Management System</a>
+      
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/canciones}">Cancion Management</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <br>
+      <br>
+          <div class = "container">
+              <div class = "row">
+                  <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+                      <h1 class = "text-center"> Create New Cancion </h1>
+                      <div class = "card-body">
+                          <!-- Formulario para añadir los datos del canción -->
+                          <form th:action="@{/cancion}" th:object = "${cancion}" method="POST">
+                              <div class ="form-group">
+                                  <label> Cancion Titulo </label>
+                                  <input
+                                  type = "text"
+                                  name = "titulo"
+                                  th:field = "*{titulo}"
+                                  class = "form-control"
+                                  placeholder="Introduzca su titulo" 
+                                  />
+                              </div>
+                              
+                              <div class ="form-group">
+                                  <label> Cancion Duración en Segundos </label>
+                                  <input
+                                  type = "number"
+                                  name = "duracion_seg"
+                                  th:field = "*{duracion_seg}"
+                                  class = "form-control"
+                                  placeholder="Introduzca su duracion en segundos" 
+                                  min="0"
+                                  required
+                                  />
+                              </div>
+                              
+                              <div class ="form-group">
+                                  <label> Cancion Año de Publicación </label>
+                                  <input
+                                  type = "number"
+                                  name = "anio_publicacion"
+                                  th:field = "*{anio_publicacion}"
+                                  class = "form-control"
+                                  placeholder="Introduzca su año de publicación" 
+                                  min ="1800"
+                                  max ="2024"
+                                  />
+                              </div>
+                              <div>
+                                  <label>Cancion Artista</label>
+                                  <select name = "artistaId" class="form-control" required>
+                                        <option value="">Selecciona un artista</option>
+                                        <!-- Itera sobre la lista de artistas y genera opciones -->
+                                        <th:block th:each="artista : ${artistas}">
+                                            <option th:value="${artista.id_artista}" th:text="${artista.nombre_artista}"></option>
+                                        </th:block>
+                                    </select>
+                                  
+                              </div>
+                              
+                              <div class = "box-footer">
+                                  <button type="submit" class = "btn btn-primary">
+                                      Enviar
+                                  </button>
+                              </div>
+                          </form>
+                      
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+
+
+
+
+
+</body>
+</html>

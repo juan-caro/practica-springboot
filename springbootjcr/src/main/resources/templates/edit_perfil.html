@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>Perfils</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-md bg-info navbar-info">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">Perfil Management System</a>
+      
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" th:href="@{/perfil}">Perfil Management</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+      <br>
+      <br>
+          <div class = "container">
+              <div class = "row">
+                  <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+                      <h1 class = "text-center"> Update Perfil </h1>
+                      <div class = "card-body">
+                          <form th:action="@{/perfil/{id} (id=${perfil.id_perfil})}" th:object = "${perfil}" method="POST" onsubmit="return validarFormulario()">
+                              <div class ="form-group d-none">
+                                  <label> Perfil ID </label>
+                                  <input
+                                  type = "text"
+                                  name = "id_perfil"
+                                  id ="id_perfil"
+                                  th:field = "*{id_perfil}"
+                                  class = "form-control"
+                                  placeholder="Introduzca el login del perfil" 
+                                  required
+                                  />
+                              </div>
+                              
+                              <div class ="form-group">
+                                  <label> Perfil Login </label>
+                                  <input
+                                  type = "text"
+                                  id ="login"
+                                  name = "login"
+                                  th:field = "*{login}"
+                                  class = "form-control"
+                                  placeholder="Introduzca el login del perfil" 
+                                  required
+                                  />
+                              </div>
+                              
+                              <div class ="form-group">
+                                  <label> Perfil Contraseña </label>
+                                  <input
+                                  type = "password"
+                                  name = "contrasenia"
+                                  class = "form-control"
+                                  placeholder="Introduzca la contraseña del perfil" 
+                                  value="${perfil.contrasenia}"
+                                  />
+                              </div>
+                              
+                              <div class ="form-group">
+                                  <label> Perfil Email </label>
+                                  <input
+                                  type = "email"
+                                  name = "email"
+                                  id ="email"
+                                  th:field = "*{email}"
+                                  class = "form-control"
+                                  placeholder="Introduzca el email del perfil" 
+                                  required
+                                  />
+                              </div>
+                              
+                              <div class ="form-group">
+                                  <label> Perfil Nombre Usuario </label>
+                                  <input
+                                  type = "text"
+                                  name = "nombre_usuario"
+                                  id ="username"
+                                  th:field = "*{nombre_usuario}"
+                                  class = "form-control"
+                                  placeholder="Introduzca el nombre de usuario del perfil" 
+                                  required
+                                  />
+                              </div>
+                              
+                              <div>
+                                  <label>Añadir Playlist</label>
+                                  <select name = "playlistId" class="form-control">
+                                        <option value="">Selecciona una playlist que añadir al perfil</option>
+                                        <!-- Itera sobre la lista de artistas y genera opciones -->
+                                        <th:block th:each="playlist : ${playlists}">
+                                            <option th:value="${playlist.id_playlist}" th:text="${playlist.nombre_playlist}"></option>
+                                        </th:block>
+                                    </select>
+                                  
+                              </div>
+                              
+                              <div>
+                                  <label>Quitar Playlist</label>
+                                  <select name = "borrarId" class="form-control">
+                                        <option value="">Selecciona una playlist que borrar del perfil</option>
+                                        <!-- Itera sobre la lista de artistas y genera opciones -->
+                                        <th:block th:each="cargada : ${cargadas}">
+                                            <option th:value="${cargada.id_playlist}" th:text="${cargada.nombre_playlist}"></option>
+                                        </th:block>
+                                    </select>
+                                  
+                              </div>
+                              
+                              <div class = "box-footer">
+                                  <button type="submit" class = "btn btn-primary">
+                                      Enviar
+                                  </button>
+                              </div>
+                          </form>
+                          
+                            <script>
+                            function validarFormulario() {
+                                console.log("hola");
+                                var login = document.getElementById("login").value;
+                                var username = document.getElementById("username").value;
+                                var email = document.getElementById("email").value;
+                                var id = parseInt(document.getElementById("id_perfil").value);
+                                var urlLogin ="/verificarLogin/"+id;
+                                var urlUsername="/verificarUsername/"+id;
+                                var urlEmail="/verificarEmail/"+id;
+                                var xhrLogin = new XMLHttpRequest();
+                                xhrLogin.open("POST", urlLogin, false);
+                                xhrLogin.setRequestHeader("Content-Type", "application/json");
+                                xhrLogin.send(JSON.stringify(login));
+
+                                if (xhrLogin.status == 200) {
+                                    var respuestaLogin = JSON.parse(xhrLogin.responseText);
+                                    if (!respuestaLogin) {
+                                        alert("Mensaje de alerta: ¡El login ya existe en el sistema, escoja otro!");
+                                        return false;
+                                    }
+                                } else {
+                                    alert("Error: No se pudo realizar la verificación del login.");
+                                    return false;
+                                }
+
+                                var xhrUsername = new XMLHttpRequest();
+                                xhrUsername.open("POST", urlUsername, false);
+                                xhrUsername.setRequestHeader("Content-Type", "application/json");
+                                xhrUsername.send(JSON.stringify(username));
+
+                                if (xhrUsername.status == 200) {
+                                    var respuestaUsername = JSON.parse(xhrUsername.responseText);
+                                    if (!respuestaUsername) {
+                                        alert("Mensaje de alerta: ¡El nombre de usuario ya existe en el sistema, escoja otro!");
+                                        return false;
+                                    }
+                                } else {
+                                    alert("Error: No se pudo realizar la verificación del username.");
+                                    return false;
+                                }
+                                
+                                var xhrEmail = new XMLHttpRequest();
+                                xhrEmail.open("POST", urlEmail, false);
+                                xhrEmail.setRequestHeader("Content-Type", "application/json");
+                                xhrEmail.send(JSON.stringify(email));
+
+                                if (xhrEmail.status == 200) {
+                                    var respuestaEmail = JSON.parse(xhrEmail.responseText);
+                                    if (!respuestaEmail) {
+                                        alert("Mensaje de alerta: ¡El email ya existe en el sistema, escoja otro!");
+                                        return false;
+                                    }
+                                } else {
+                                    alert("Error: No se pudo realizar la verificación del email.");
+                                    return false;
+                                }
+
+                                // Si todo está bien, permitir el envío del formulario
+                                return true;
+                            }
+                        </script>
+                      
+                      </div>
+                  </div>
+              </div>
+          </div>
+
+
+
+
+</body>
+</html>

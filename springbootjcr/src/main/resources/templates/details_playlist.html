@@ -1,0 +1,76 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml"xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <title>Canciones</title> 
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+    
+    <nav class="navbar navbar-expand-md bg-info navbar-info">
+        <!-- Brand -->
+        <a class="navbar-brand" href="#">Cancion Management System</a>
+    
+        <!-- Toggler/collapsibe Button -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <!-- Navbar links -->
+        <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+            <a class="nav-link" href="/perfil">Perfil Management</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/playlist">Playlist Management</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/cancion">Canción Management</a>
+            </li>
+            <li class="nav-item">
+            <a class="nav-link" href="/artista">Artista Management</a>
+            </li>
+            
+        </ul>
+        </div>
+    </nav>
+    
+        <div class ="container">
+            <div class = "row">
+                <h1> Canciones de la playlist </h1>
+            </div>
+            
+            <table class = "table table-striped table-bordered">
+                <thead class = "table-info">
+                    <tr>
+                        <th> Cancion ID </th>
+                        <th> Cancion Título </th>
+                        <th> Cancion Artista </th>
+                        <th> Cancion Duración en Segundos </th>
+                        <th> Cancion Año Publicación </th>
+                    </tr>
+                </thead>
+                <!-- Detalles de las canciones de la playlist -->
+                <tbody>
+                     <tr th:each = "cancion: ${canciones}">
+                        <td th:text = "${cancion.id_cancion}"></td>
+                        <td th:text = "${cancion.titulo}"></td>
+                        <td th:text="${cancion.artista_cancion.id_artista + ' - ' + cancion.artista_cancion.nombre_artista}"></td>
+                        <td th:text = "${cancion.duracion_seg}"></td>
+                        <td th:text = "${cancion.anio_publicacion}"></td>
+                    </tr>
+                </tbody>
+                <br>
+                <a th:href = "@{/playlist}"
+                               class = "btn btn-primary">Volver</a>
+                </br>
+            </table>
+            
+        </div>
+
+
+
+
+</body>
+</html>
